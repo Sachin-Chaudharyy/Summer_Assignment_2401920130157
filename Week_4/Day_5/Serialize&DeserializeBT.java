@@ -1,0 +1,35 @@
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        preorder(root, sb);
+        return sb.toString();
+    }
+    public void preorder(TreeNode root, StringBuilder sb){
+        if(root == null){
+            sb.append("N,");
+            return;
+        }
+        sb.append(root.val).append(",");
+        preorder(root.left, sb);
+        preorder(root.right, sb);
+    }
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String nodes[] = data.split(",");
+        int idx[] = {0};
+        return build(nodes, idx);
+    }
+    public TreeNode build(String[] nodes, int idx[]){
+        if(nodes[idx[0]].equals("N")){
+            idx[0]++;
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(nodes[idx[0]]));
+        idx[0]++;
+        root.left = build(nodes, idx);
+        root.right = build(nodes, idx);
+        return root;
+    }
+}
